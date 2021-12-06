@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package product;
+
+option go_package = "github.com/ditdittdittt/learn-grpc/productproto";
+
+service Product {
+    rpc Create (CreateRequest) returns (CreateResponse) {}
+}
+
+message CreateRequest {
+    string name = 1;
+}
+
+message CreateResponse {
+    string result = 1;
+}

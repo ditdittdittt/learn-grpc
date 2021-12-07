@@ -8,6 +8,7 @@ import (
 
 	deliverygrpc "github.com/ditdittdittt/learn-grpc/delivery/grpc"
 	pb "github.com/ditdittdittt/learn-grpc/productproto"
+	"github.com/ditdittdittt/learn-grpc/usecase"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -22,9 +23,17 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
+	// Setup Usecase
+	productMap := map[string]string{}
+	productUsecase := usecase.NewProductUsecase(productMap)
+	productGRPC := deliverygrpc.NewProductServiceServer(productUsecase)
+
+	// Setup Server
 	s := grpc.NewServer()
-	pb.RegisterProductServer(s, deliverygrpc.NewProductServer())
 	reflection.Register(s)
+	pb.RegisterProductServiceServer(s, productGRPC)
+
 	log.Printf("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

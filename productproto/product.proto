@@ -1,17 +1,55 @@
 syntax = "proto3";
 
+// protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative .\productproto\product.proto
 package product;
 
 option go_package = "github.com/ditdittdittt/learn-grpc/productproto";
 
-service Product {
+service ProductService {
     rpc Create (CreateRequest) returns (CreateResponse) {}
+    rpc Read (ReadRequest) returns (ReadResponse) {}
+    rpc Update (UpdateRequest) returns (UpdateResponse) {}
+    rpc Delete (DeleteRequest) returns (DeleteResponse) {}
+}
+
+message Product {
+    string ID = 1;
+    string Name = 2;
 }
 
 message CreateRequest {
-    string name = 1;
+    string Name = 1;
 }
 
 message CreateResponse {
-    string result = 1;
+    string ID = 1;
+    int32 ResponseCode = 2;
+}
+
+message ReadRequest {
+
+}
+
+message ReadResponse {
+    repeated Product Products = 1;
+    int32 ResponseCode = 2;
+}
+
+message UpdateRequest {
+    string ID = 1;
+    string Name = 2;
+}
+
+message UpdateResponse {
+    string ID = 1;
+    string Name = 2;
+    int32 ResponseCode = 3;
+}
+
+message DeleteRequest {
+    string ID = 1;
+}
+
+message DeleteResponse {
+    int32 ResponseCode = 1;
 }

@@ -19,10 +19,6 @@ var (
 
 func main() {
 	flag.Parse()
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
 
 	// Setup Usecase
 	productMap := map[string]string{}
@@ -33,6 +29,11 @@ func main() {
 	s := grpc.NewServer()
 	reflection.Register(s)
 	pb.RegisterProductServiceServer(s, productGRPC)
+
+	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
 
 	log.Printf("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {

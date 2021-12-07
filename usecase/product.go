@@ -35,7 +35,8 @@ func (uc *productUsecase) Read(ctx context.Context) (map[string]string, error) {
 }
 
 func (uc *productUsecase) Update(ctx context.Context, id string, name string) (string, string, error) {
-	if uc.productData[id] == "" {
+	_, ok := uc.productData[id]
+	if !ok {
 		return "", "", errors.New("not found")
 	}
 
@@ -44,7 +45,8 @@ func (uc *productUsecase) Update(ctx context.Context, id string, name string) (s
 }
 
 func (uc *productUsecase) Delete(ctx context.Context, id string) error {
-	if uc.productData[id] == "" {
+	_, ok := uc.productData[id]
+	if !ok {
 		return errors.New("not found")
 	}
 
